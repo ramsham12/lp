@@ -3,7 +3,7 @@ close all;
 t=0:0.001:1; 
 fc=input('Enter Carrier frequency'); 
 fm=input('Enter Modulating frequency'); 
-amp=input('Enter amplitude'); 
+amp=input('Enter amplitude');
 c=amp.*sin(2*pi*fc*t); 
 subplot(3,1,1); 
 plot(t,c); 
