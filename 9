@@ -1,0 +1,51 @@
+clc; 
+clear all; 
+n=7; 
+k=4; 
+disp('parity matrix is'); 
+p=[1 1 0;0 0 1;0 1 0;0 1 1 ]; 
+disp(p); 
+ik=eye(k); 
+ip=n-k; 
+%encoding 
+g=cat(2,ik,p); 
+disp('generator matrix is'); 
+disp(g); 
+d=[1 1 0 1]; 
+disp('message'); 
+disp(d); 
+c1=mtimes(d,g); 
+c=mod(c1,2); 
+disp('codeword'); 
+disp(c); 
+%decoding 
+r=[1 1 0 0 0 0 1]; 
+disp('received bit'); 
+disp(r); 
+pt=p'; 
+disp(pt); 
+ink=eye(ip); 
+disp(ink); 
+h=cat(2,pt,ink); 
+disp('parity check matrix'); 
+disp(h); 
+ht=h'; 
+disp('transpose parity check matrix'); 
+disp(ht); 
+s1=mtimes(r,ht); 
+s=mod(s1,2); 
+disp('syndrome matrix'); 
+disp(s); 
+if(s==0) 
+disp('codeword is correct'); 
+else 
+for j=1:1:n 
+m=xor(s,ht(j,:)); 
+if(m==0) 
+row=j; 
+break; 
+end 
+end 
+r(1,row)=~r(1,row); 
+disp('corrected code word is');
+end
