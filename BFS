@@ -1,57 +1,28 @@
-#include<iostream>
-#include<omp.h>
-#include<vector>
-#include<queue>
-
-using namespace std;
-
-const int N=6;
-vector<int>graph[N];
-bool visited[N];
-
-void bfs(int start){
-    queue<int>q;
-    q.push(start);
-    visited[start]=true;
-
-    while(!q.empty()){
-        int size = q.size();
-
-        #pragma omp parallel for
-        for(int i=0;i<size;i++){
-            int node;
-            #pragma omp critical
-            {
-                if(!q.empty()){
-                    node=q.front();
-                    q.pop();
-                    cout<<node<<" ";
-                }
-            }
-            for( int neighbour : graph[node]){
-                #pragma omp critical 
-                {
-                    if(!visited[neighbour]){
-                        visited[neighbour]=true;
-                        q.push(neighbour);
-                    }
-                }
-            }
-        }
-    }
-}
-int main(){
-    graph[0]={1,2};
-    graph[1]={0,3,4};
-    graph[2]={0,5};
-    graph[3]={1};
-    graph[4]={1};
-    graph[5]={2};
-
-    fill(visited,visited+N,false);
-
-    cout<<"THE bfs starts from node 0: ";
-    bfs(0);
-    return 0;
-    
-}
+clc 
+close all; 
+t=0:0.001:1; 
+fc=input('Enter Carrier frequency'); 
+fm=input('Enter Modulating frequency'); 
+amp=input('Enter amplitude'); 
+c=amp.*sin(2*pi*fc*t); 
+subplot(3,1,1); 
+plot(t,c); 
+xlabel('Time'); 
+ylabel('Amplitude'); 
+title('Carrier signal'); 
+m=amp*square(2*pi*fm*t); 
+subplot(3,1,2); 
+plot(t,m); 
+xlabel('Time'); 
+ylabel('Amplitude'); 
+title('Modulating signal'); 
+x=c.*m; 
+subplot(3,1,3); 
+plot(t,x); 
+xlabel('Time'); 
+ylabel('Amplitude'); 
+title('PSK signal'); 
+//Input 
+//Enter Carrier frequency20 
+//Enter Modulating frequency10 
+//Enter amplitude2
